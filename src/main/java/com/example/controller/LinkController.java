@@ -45,4 +45,9 @@ public class LinkController {
     public String getOriginalLink(@RequestParam String id) {
         return id;
     }
+
+    @PostMapping("/getInfo")
+    public Link getShortLinkInfo(@RequestBody String shortLink) {
+        return linkService.getInfo(shortLink);
+    }
 }

@@ -70,4 +70,11 @@ public class LinkServiceImpl implements LinkService {
             linkRepository.delete(link.get());
         }
     }
+
+    @Override
+    public Link getInfo(String shortLink) {
+        return linkRepository.findByShortLink(shortLink).orElseThrow(() -> new RuntimeException("Ссылка не найдена"));
+    }
+
+
 }
