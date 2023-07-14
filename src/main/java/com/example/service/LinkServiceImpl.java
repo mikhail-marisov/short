@@ -62,4 +62,12 @@ public class LinkServiceImpl implements LinkService {
     public List<String> getAllShortLinks() {
         return linkRepository.findAll().stream().map(Link::getShortLink).collect(Collectors.toList());
     }
+
+    @Override
+    public void delete(String shortLink) {
+        Optional<Link> link = linkRepository.findByShortLink(shortLink);
+        if (link.isPresent()) {
+            linkRepository.delete(link.get());
+        }
+    }
 }

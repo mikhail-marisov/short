@@ -31,8 +31,14 @@ public class LinkController {
     }
 
     @GetMapping("/getAll")
+    @ResponseStatus(HttpStatus.OK)
     public List<String> getAllShortLinks() {
         return linkService.getAllShortLinks();
+    }
+
+    @PostMapping("/delete")
+    public void deleteLink(@RequestBody String shortLink) {
+        linkService.delete(shortLink);
     }
 
     @GetMapping()
