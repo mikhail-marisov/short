@@ -9,4 +9,5 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
 
     Optional<Link> findByLink(String link);
     Optional<Link> findByShortLink(String shortLink);
+
 }

@@ -10,6 +10,6 @@ public interface LinkService {
     List<String> getAllShortLinks();
     void delete(String shortLink);
     Link getInfo(String shortLink);
-
+    List<String> getFirst20();
 
 }

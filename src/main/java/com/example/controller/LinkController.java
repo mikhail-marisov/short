@@ -50,4 +50,9 @@ public class LinkController {
     public Link getShortLinkInfo(@RequestBody String shortLink) {
         return linkService.getInfo(shortLink);
     }
+
+    @GetMapping("/first20")
+    public List<String> getFirst20() {
+        return linkService.getFirst20();
+    }
 }

@@ -6,6 +6,7 @@ import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,6 +75,11 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public Link getInfo(String shortLink) {
         return linkRepository.findByShortLink(shortLink).orElseThrow(() -> new RuntimeException("Ссылка не найдена"));
+    }
+
+    public List<String> getFirst20() {
+        Comparator<Link> comp = (link, t1) -> link.getCount().compareTo(t1.getCount());
+        return linkRepository.findAll().stream().sorted(comp.reversed()).map(Link::getLink).limit(20).collect(Collectors.toList());
     }
 
 
