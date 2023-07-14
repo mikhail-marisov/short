@@ -6,7 +6,6 @@ import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,5 +56,10 @@ public class LinkServiceImpl implements LinkService {
         }
 
         return shortLink;
+    }
+
+    @Override
+    public List<String> getAllShortLinks() {
+        return linkRepository.findAll().stream().map(Link::getShortLink).collect(Collectors.toList());
     }
 }
