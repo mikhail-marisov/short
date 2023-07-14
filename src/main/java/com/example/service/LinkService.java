@@ -11,5 +11,6 @@ public interface LinkService {
     void delete(String shortLink);
     Link getInfo(String shortLink);
     List<String> getFirst20();
+    String geyOriginalLink(String params);
 
 }

@@ -77,10 +77,19 @@ public class LinkServiceImpl implements LinkService {
         return linkRepository.findByShortLink(shortLink).orElseThrow(() -> new RuntimeException("Ссылка не найдена"));
     }
 
+    @Override
     public List<String> getFirst20() {
         Comparator<Link> comp = (link, t1) -> link.getCount().compareTo(t1.getCount());
         return linkRepository.findAll().stream().sorted(comp.reversed()).map(Link::getLink).limit(20).collect(Collectors.toList());
     }
 
+    @Override
+    public String geyOriginalLink(String params) {
+
+        StringBuilder strBuilder = new StringBuilder("http://localhost:8080/short/?id=");
+        String shortLink = strBuilder.append(params).toString();
+
+        return linkRepository.findByShortLink(shortLink).orElseThrow(() -> new RuntimeException("Данная короткая ссылка недействительна")).getLink();
+    }
 
 }
