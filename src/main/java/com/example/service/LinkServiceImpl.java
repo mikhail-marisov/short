@@ -25,10 +25,7 @@ public class LinkServiceImpl implements LinkService {
     @Transactional
     public String create(String link) {
 
-        String lnk1 = link.substring(0, 8);
-        String lnk2 = link.substring(0, 9);
-
-        if (!link.substring(0, 7).equals("http://") && !link.substring(0, 8).equals("https://")) {
+        if (link.length() < 7 || (!link.substring(0, 7).equals("http://") && !link.substring(0, 8).equals("https://"))) {
             throw new IllegalArgumentException("Ой Вот ведь не задача! Неверный формат ссылки");
         }
 
@@ -39,13 +36,11 @@ public class LinkServiceImpl implements LinkService {
             shortLink = linkFromDb.get().getShortLink();
             linkFromDb.get().increaseCount();
             linkRepository.save(linkFromDb.get());
-            //linkRepository.flush();
         } else {
             //Если для данного URL нет короткой ссылки то генерим ее
             List<String> shortLinks = linkRepository.findAll().stream().map(Link::getShortLink).collect(Collectors.toList());
 
             String urlParam = RandomStringUtils.randomAlphanumeric(7);
-            //System.out.println(urlParam);
             StringBuilder linkBuilder = new StringBuilder("http://localhost:8080/short/?id=");
             shortLink = linkBuilder.append(urlParam).toString();
 
@@ -57,10 +52,8 @@ public class LinkServiceImpl implements LinkService {
                 }
             }
 
-            Link newLink = new Link();
-            newLink.setShortLink(shortLink);
-            newLink.setLink(link);
-            newLink.setCount(1L);
+            Link newLink = new Link(link, shortLink, 1L);
+
             linkRepository.save(newLink);
         }
 
@@ -89,7 +82,7 @@ public class LinkServiceImpl implements LinkService {
 
     @Override
     public List<String> getFirst20() {
-        Comparator<Link> comp = (link, t1) -> link.getCount().compareTo(t1.getCount());
+        Comparator<Link> comp = Comparator.comparing(Link::getCount);
         return linkRepository.findAll().stream().sorted(comp.reversed()).map(Link::getLink).limit(20).collect(Collectors.toList());
     }
 

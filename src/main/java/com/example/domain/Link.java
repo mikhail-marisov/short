@@ -27,6 +27,12 @@ public class Link {
 
     public Link() {}
 
+    public Link(String link, String shortLink, Long count) {
+        this.link = link;
+        this.shortLink = shortLink;
+        this.count = count;
+    }
+
     public String getLink() {
         return link;
     }
