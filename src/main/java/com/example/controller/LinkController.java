@@ -47,9 +47,14 @@ public class LinkController {
     }
 
     @GetMapping()
-    public ResponseEntity<Objects> getOriginalLink(@RequestParam String id) throws URISyntaxException {
+    public ResponseEntity<Objects> getOriginalLink(@RequestParam String id) {
 
-        URI extUri = new URI(linkService.geyOriginalLink(id));
+        URI extUri;
+        try {
+            extUri = new URI(linkService.getOriginalLink(id));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(extUri);
 

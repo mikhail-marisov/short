@@ -5,6 +5,7 @@ import com.example.repository.LinkRepository;
 import liquibase.repackaged.org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
@@ -23,6 +24,13 @@ public class LinkServiceImpl implements LinkService {
     @Override
     @Transactional
     public String create(String link) {
+
+        String lnk1 = link.substring(0, 8);
+        String lnk2 = link.substring(0, 9);
+
+        if (!link.substring(0, 7).equals("http://") && !link.substring(0, 8).equals("https://")) {
+            throw new IllegalArgumentException("Ой Вот ведь не задача! Неверный формат ссылки");
+        }
 
         String shortLink;
         Optional<Link> linkFromDb = linkRepository.findByLink(link);
@@ -69,12 +77,14 @@ public class LinkServiceImpl implements LinkService {
         Optional<Link> link = linkRepository.findByShortLink(shortLink);
         if (link.isPresent()) {
             linkRepository.delete(link.get());
+        } else {
+            throw new EntityNotFoundException("Ссылка не найдена");
         }
     }
 
     @Override
     public Link getInfo(String shortLink) {
-        return linkRepository.findByShortLink(shortLink).orElseThrow(() -> new RuntimeException("Ссылка не найдена"));
+        return linkRepository.findByShortLink(shortLink).orElseThrow(() -> new EntityNotFoundException("Ссылка не найдена"));
     }
 
     @Override
@@ -84,12 +94,12 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public String geyOriginalLink(String params) {
+    public String getOriginalLink(String params) {
 
         StringBuilder strBuilder = new StringBuilder("http://localhost:8080/short/?id=");
         String shortLink = strBuilder.append(params).toString();
 
-        return linkRepository.findByShortLink(shortLink).orElseThrow(() -> new RuntimeException("Данная короткая ссылка недействительна")).getLink();
+        return linkRepository.findByShortLink(shortLink).orElseThrow(() -> new EntityNotFoundException("Данная короткая ссылка недействительна")).getLink();
     }
 
 }
