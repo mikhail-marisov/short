@@ -4,9 +4,8 @@
 CREATE TABLE IF NOT EXISTS links
 (
     id SERIAL PRIMARY KEY,
-    link CHARACTER LARGE OBJECT,
+    link TEXT,
     short_link VARCHAR(255),
-    counts BIGINT,
-    PRIMARY KEY (id)
+    counts BIGINT
     );
 

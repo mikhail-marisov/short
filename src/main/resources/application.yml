@@ -1,16 +1,23 @@
+server:
+  port: 8181
+
 spring:
   application:
     name: short
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: none
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
   datasource:
-    url: jdbc:h2:mem:short
-    username:
-    password:
-    h2:
-      console:
-        enabled: true
-    driver-class-name: org.h2.Driver
+    password: short
+    username: short
+    url: jdbc:postgresql://localhost:15432/short
+    driver-class-name: org.postgresql.Driver
   liquibase:
     change-log: db/changelog/db.changelog-master.yaml
     enabled: true
+    drop-first: false
+    default-schema: public
