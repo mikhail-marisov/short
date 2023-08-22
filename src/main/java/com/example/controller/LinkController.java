@@ -26,7 +26,7 @@ import java.util.Objects;
 @RequestMapping("/short/")
 public class LinkController {
 
-    LinkService linkService;
+    private LinkService linkService;
 
     public LinkController(LinkService linkService) {
         this.linkService = linkService;
